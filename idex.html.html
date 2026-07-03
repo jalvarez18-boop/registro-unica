@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia Obligatorio</title>
+
+    <style>
+        body{
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+            background:#f0f2f5;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            margin:0;
+            overflow:hidden;
+        }
+
+        .container{
+            background:#fff;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 4px 15px rgba(0,0,0,.15);
+            width:100%;
+            max-width:500px;
+            box-sizing:border-box;
+        }
+
+        h2{
+            text-align:center;
+            color:#1a73e8;
+            margin-top:0;
+        }
+
+        .instructions{
+            font-size:13px;
+            color:#5f6368;
+            line-height:1.5;
+            margin-bottom:20px;
+            text-align:justify;
+            background:#e8f0fe;
+            padding:12px;
+            border-radius:6px;
+        }
+
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        label{
+            display:block;
+            font-weight:bold;
+            margin-bottom:5px;
+        }
+
+        select{
+            width:100%;
+            padding:10px;
+            border:1px solid #dadce0;
+            border-radius:6px;
+            box-sizing:border-box;
+        }
+
+        .radio-group{
+            display:flex;
+            gap:20px;
+        }
+
+        .radio-option{
+            display:flex;
+            align-items:center;
+            gap:5px;
+        }
+
+        button{
+            width:100%;
+            background:#1a73e8;
+            color:white;
+            border:none;
+            padding:12px;
+            border-radius:6px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:10px;
+        }
+
+        button:hover{
+            background:#1557b0;
+        }
+
+        button:disabled{
+            background:#ccc;
+            cursor:not-allowed;
+        }
+
+        #loading{
+            display:none;
+            text-align:center;
+            color:#1a73e8;
+            font-weight:bold;
+            margin-top:15px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Registro de Asistencia Estudiantes</h2>
+
+<div class="instructions">
+<strong>Estimad@ Estudiante:</strong>
+Seleccione la información solicitada para registrar su asistencia al laboratorio.
+</div>
+
+<form id="attendanceForm">
+
+<div class="form-group">
+<label for="laboratorio">Laboratorio Actual:</label>
+
+<select id="laboratorio" name="laboratorio" required>
+
+<option value="" disabled selected>Seleccione...</option>
+
+<option value="Laboratorio C1">Laboratorio C1</option>
+<option value="Laboratorio C2">Laboratorio C2</option>
+<option value="Laboratorio C3">Laboratorio C3</option>
+<option value="Laboratorio G1">Laboratorio G1</option>
+<option value="Laboratorio G2">Laboratorio G2</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Género:</label>
+
+<div class="radio-group">
+
+<div class="radio-option">
+<input type="radio" name="genero" value="M" required> M
+</div>
+
+<div class="radio-option">
+<input type="radio" name="genero" value="H" required> H
+</div>
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label for="motivo">¿A qué vienes al laboratorio?</label>
+
+<select id="motivo" name="motivo" required>
+
+<option value="" disabled selected>Seleccione...</option>
+
+<option value="A mi clase normal de hoy">
+A mi clase normal de hoy
+</option>
+
+<option value="A usar la máquina libre (fuera de clase / tareas)">
+A usar la máquina libre (fuera de clase / tareas)
+</option>
+
+</select>
+
+</div>
+
+<button type="submit" id="btnEnviar">Enviar</button>
+
+<div id="loading">
+Enviando registro...
+</div>
+
+</form>
+
+</div>
+
+<script>
+
+const scriptURL='https://script.google.com/macros/s/AKfycbxYSVxhZdhtgT81zS_c_ZpBLk_0ZxjGrpUVti31vU9B3Ykh1z8hEB5LlFYHl5ONhKI/exec';
+
+const form=document.getElementById("attendanceForm");
+
+const btn=document.getElementById("btnEnviar");
+
+const loading=document.getElementById("loading");
+
+form.addEventListener("submit",e=>{
+
+e.preventDefault();
+
+btn.disabled=true;
+
+loading.style.display="block";
+
+fetch(scriptURL,{
+method:"POST",
+body:new FormData(form)
+})
+
+.then(response=>{
+
+loading.innerHTML="¡Registro exitoso!";
+
+setTimeout(()=>{
+
+window.open('','_self').close();
+
+window.close();
+
+},1000);
+
+})
+
+.catch(error=>{
+
+alert("Error de conexión.");
+
+btn.disabled=false;
+
+loading.style.display="none";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
