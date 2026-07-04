@@ -103,7 +103,6 @@
             margin-top:15px;
         }
     </style>
-
 </head>
 
 <body>
@@ -113,7 +112,7 @@
 <h2>Registro de Asistencia Estudiantes</h2>
 
 <div class="instructions">
-<strong>Estimad@ Estudiante:</strong>
+<strong>Estimad@ Estudiante:</strong><br>
 Seleccione la información solicitada para registrar su asistencia al laboratorio.
 </div>
 
@@ -123,25 +122,20 @@ Seleccione la información solicitada para registrar su asistencia al laboratori
 <label for="laboratorio">Laboratorio Actual:</label>
 
 <select id="laboratorio" name="laboratorio" required>
-
-<option value="" disabled selected>Seleccione...</option>
-
+<option value="" selected disabled>Seleccione...</option>
 <option value="Laboratorio C1">Laboratorio C1</option>
 <option value="Laboratorio C2">Laboratorio C2</option>
 <option value="Laboratorio C3">Laboratorio C3</option>
 <option value="Laboratorio G1">Laboratorio G1</option>
 <option value="Laboratorio G2">Laboratorio G2</option>
-
 </select>
 
 </div>
 
 <div class="form-group">
-
 <label>Género:</label>
 
 <div class="radio-group">
-
 <div class="radio-option">
 <input type="radio" name="genero" value="M" required> M
 </div>
@@ -149,8 +143,30 @@ Seleccione la información solicitada para registrar su asistencia al laboratori
 <div class="radio-option">
 <input type="radio" name="genero" value="H" required> H
 </div>
-
 </div>
+</div>
+
+<div class="form-group">
+<label for="facultad">Facultad:</label>
+
+<select id="facultad" name="facultad" required>
+<option value="" selected disabled>Seleccione una facultad...</option>
+<option value="Ciencias Médicas">Facultad de Ciencias Médicas</option>
+<option value="Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
+<option value="Ciencias Económicas y Empresariales">Facultad de Ciencias Económicas y Empresariales</option>
+<option value="Arquitectura, Diseño y Artes">Facultad de Arquitectura, Diseño y Artes</option>
+<option value="Ingeniería">Facultad de Ingeniería</option>
+<option value="Ciencias Jurídicas">Facultad de Ciencias Jurídicas</option>
+<option value="Educación">Facultad de Educación</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="carrera">Carrera:</label>
+
+<select id="carrera" name="carrera" required disabled>
+<option value="" selected disabled>Primero seleccione una facultad...</option>
+</select>
 
 </div>
 
@@ -160,7 +176,7 @@ Seleccione la información solicitada para registrar su asistencia al laboratori
 
 <select id="motivo" name="motivo" required>
 
-<option value="" disabled selected>Seleccione...</option>
+<option value="" selected disabled>Seleccione...</option>
 
 <option value="A mi clase normal de hoy">
 A mi clase normal de hoy
@@ -186,12 +202,69 @@ Enviando registro...
 
 <script>
 
+const carreras = {
+
+"Ciencias Médicas":[
+"Medicina",
+"Odontología"
+],
+
+"Ciencias de la Salud":[
+"Psicología"
+],
+
+"Ciencias Económicas y Empresariales":[
+"Administración de Empresas",
+"Contabilidad y Finanzas",
+"Marketing y Publicidad",
+"Relaciones Internacionales"
+],
+
+"Arquitectura, Diseño y Artes":[
+"Arquitectura",
+"ADA"
+],
+
+"Ingeniería":[
+"Ingeniería Industrial"
+],
+
+"Ciencias Jurídicas":[
+"Derecho"
+],
+
+"Educación":[
+"Pedagogía"
+]
+
+};
+
+const facultad=document.getElementById("facultad");
+const carrera=document.getElementById("carrera");
+
+facultad.addEventListener("change",function(){
+
+const lista=carreras[this.value];
+
+carrera.innerHTML='<option value="" selected disabled>Seleccione una carrera...</option>';
+
+lista.forEach(function(item){
+
+const option=document.createElement("option");
+option.value=item;
+option.textContent=item;
+carrera.appendChild(option);
+
+});
+
+carrera.disabled=false;
+
+});
+
 const scriptURL='https://script.google.com/macros/s/AKfycbxYSVxhZdhtgT81zS_c_ZpBLk_0ZxjGrpUVti31vU9B3Ykh1z8hEB5LlFYHl5ONhKI/exec';
 
 const form=document.getElementById("attendanceForm");
-
 const btn=document.getElementById("btnEnviar");
-
 const loading=document.getElementById("loading");
 
 form.addEventListener("submit",e=>{
@@ -199,7 +272,6 @@ form.addEventListener("submit",e=>{
 e.preventDefault();
 
 btn.disabled=true;
-
 loading.style.display="block";
 
 fetch(scriptURL,{
@@ -214,7 +286,6 @@ loading.innerHTML="¡Registro exitoso!";
 setTimeout(()=>{
 
 window.open('','_self').close();
-
 window.close();
 
 },1000);
@@ -226,7 +297,6 @@ window.close();
 alert("Error de conexión.");
 
 btn.disabled=false;
-
 loading.style.display="none";
 
 });
@@ -237,3 +307,4 @@ loading.style.display="none";
 
 </body>
 </html>
+```
