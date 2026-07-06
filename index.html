@@ -150,14 +150,36 @@ Seleccione la información solicitada para registrar su asistencia al laboratori
 <label for="facultad">Facultad:</label>
 
 <select id="facultad" name="facultad" required>
-<option value="" selected disabled>Seleccione una facultad...</option>
-<option value="Ciencias Médicas">Facultad de Ciencias Médicas</option>
-<option value="Ciencias de la Salud">Facultad de Ciencias de la Salud</option>
-<option value="Ciencias Económicas y Empresariales">Facultad de Ciencias Económicas y Empresariales</option>
-<option value="Arquitectura, Diseño y Artes">Facultad de Arquitectura, Diseño y Artes</option>
-<option value="Ingeniería">Facultad de Ingeniería</option>
-<option value="Ciencias Jurídicas">Facultad de Ciencias Jurídicas</option>
-<option value="Educación">Facultad de Educación</option>
+    <option value="" selected disabled>Seleccione una facultad...</option>
+
+    <option value="Facultad de Ciencias Económicas y Administrativas">
+        Facultad de Ciencias Económicas y Administrativas
+    </option>
+
+    <option value="Facultad de Ingeniería y Arquitectura">
+        Facultad de Ingeniería y Arquitectura
+    </option>
+
+    <option value="Facultad de Arte, Diseño y Comunicación">
+        Facultad de Arte, Diseño y Comunicación
+    </option>
+
+    <option value="Facultad de Ciencias Jurídicas y Sociales">
+        Facultad de Ciencias Jurídicas y Sociales
+    </option>
+
+    <option value="Facultad de Ciencias Médicas">
+        Facultad de Ciencias Médicas
+    </option>
+
+    <option value="Facultad de Odontología">
+        Facultad de Odontología
+    </option>
+
+    <option value="Facultad de Humanidades">
+        Facultad de Humanidades
+    </option>
+
 </select>
 </div>
 
@@ -204,37 +226,37 @@ Enviando registro...
 
 const carreras = {
 
-"Ciencias Médicas":[
-"Medicina",
-"Odontología"
-],
-
-"Ciencias de la Salud":[
-"Psicología"
-],
-
-"Ciencias Económicas y Empresariales":[
+"Facultad de Ciencias Económicas y Administrativas":[
 "Administración de Empresas",
-"Contabilidad y Finanzas",
-"Marketing y Publicidad",
-"Relaciones Internacionales"
+"Contabilidad y Finanzas"
 ],
 
-"Arquitectura, Diseño y Artes":[
+"Facultad de Ingeniería y Arquitectura":[
 "Arquitectura",
-"ADA"
-],
-
-"Ingeniería":[
 "Ingeniería Industrial"
 ],
 
-"Ciencias Jurídicas":[
-"Derecho"
+"Facultad de Arte, Diseño y Comunicación":[
+"Arte Digital y Animación",
+"Marketing y Publicidad"
 ],
 
-"Educación":[
-"Pedagogía"
+"Facultad de Ciencias Jurídicas y Sociales":[
+"Derecho",
+"Relaciones Internacionales y Comercio Internacional"
+],
+
+"Facultad de Ciencias Médicas":[
+"Medicina General"
+],
+
+"Facultad de Odontología":[
+"Odontología"
+],
+
+"Facultad de Humanidades":[
+"Pedagogía",
+"Psicología"
 ]
 
 };
@@ -261,7 +283,7 @@ carrera.disabled=false;
 
 });
 
-const scriptURL='https://script.google.com/macros/s/AKfycbz9PWNw4Lx9lowW1OGaa-9W7b4Y-0YPtsKqa5njxAKIdsf_FuWXdHPkFvEKm0AuaTr-/exec';
+const scriptURL='https://script.google.com/macros/s/AKfycbzNcqThFgJro_IFn98k2NJOKlipdA2JMzgBQfA4OD9y1E7gGPQhUuAnu-J6Lm41GATI/exec';
 
 const form=document.getElementById("attendanceForm");
 const btn=document.getElementById("btnEnviar");
@@ -307,4 +329,3 @@ loading.style.display="none";
 
 </body>
 </html>
-```
