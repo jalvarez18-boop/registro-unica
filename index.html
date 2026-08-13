@@ -11,10 +11,11 @@
             background:#f0f2f5;
             display:flex;
             justify-content:center;
-            align-items:center;
-            height:100vh;
+            align-items:flex-start; /* Cambiado para permitir scroll */
+            min-height:100vh; /* Cambiado de height a min-height */
             margin:0;
-            overflow:hidden;
+            padding:20px 0;
+            overflow-y:auto; /* Permite scroll en la página */
         }
 
         .container{
@@ -25,6 +26,7 @@
             width:100%;
             max-width:500px;
             box-sizing:border-box;
+            margin:20px auto;
         }
 
         h2{
@@ -84,6 +86,7 @@
             font-weight:bold;
             cursor:pointer;
             margin-top:10px;
+            transition: background 0.3s;
         }
 
         button:hover{
@@ -95,12 +98,66 @@
             cursor:not-allowed;
         }
 
+        /* ===== NUEVO: MENSAJE DE ÉXITO ===== */
+        #mensaje-exito {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            font-weight: bold;
+            scroll-margin-top: 20px; /* Para que no quede pegado arriba */
+        }
+
+        #mensaje-exito .icono {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* ===== NUEVO: LOADING MEJORADO ===== */
         #loading{
             display:none;
             text-align:center;
             color:#1a73e8;
             font-weight:bold;
             margin-top:15px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e0e0e0;
+            border-top: 3px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== NUEVO: SCROLL SUAVE ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            .radio-group {
+                gap: 15px;
+            }
         }
     </style>
 </head>
@@ -114,6 +171,13 @@
 <div class="instructions">
 <strong>Estimad@ Estudiante:</strong><br>
 Seleccione la información solicitada para registrar su asistencia al laboratorio.
+</div>
+
+<!-- ===== NUEVO: MENSAJE DE ÉXITO ===== -->
+<div id="mensaje-exito">
+    <span class="icono">✅</span>
+    ¡Registro exitoso!<br>
+    <small style="font-weight:normal;">La página se recargará en unos segundos...</small>
 </div>
 
 <form id="attendanceForm">
@@ -219,7 +283,8 @@ A usar la máquina libre (fuera de clase / tareas)
 <button type="submit" id="btnEnviar">Enviar</button>
 
 <div id="loading">
-Enviando registro...
+    <span class="spinner"></span>
+    Enviando registro...
 </div>
 
 </form>
@@ -292,39 +357,58 @@ const scriptURL='https://script.google.com/macros/s/AKfycbygZKwf_phc18U1SgJxa2TB
 const form=document.getElementById("attendanceForm");
 const btn=document.getElementById("btnEnviar");
 const loading=document.getElementById("loading");
+const mensajeExito = document.getElementById("mensaje-exito");
 
-form.addEventListener("submit",e=>{
+form.addEventListener("submit", e => {
 
 e.preventDefault();
 
-btn.disabled=true;
-loading.style.display="block";
+// Deshabilitar botón y mostrar loading
+btn.disabled = true;
+loading.style.display = "block";
+mensajeExito.style.display = "none"; // Ocultar mensaje anterior si existía
 
-fetch(scriptURL,{
-method:"POST",
-body:new FormData(form)
+// Enviar datos con fetch
+fetch(scriptURL, {
+    method: "POST",
+    body: new FormData(form),
+    mode: "no-cors" // Importante para Google Apps Script
 })
 
-.then(response=>{
-
-loading.innerHTML="¡Registro exitoso!";
-
-setTimeout(()=>{
-
-window.open('','_self').close();
-window.close();
-
-},1000);
+.then(response => {
+    
+    // Ocultar loading
+    loading.style.display = "none";
+    
+    // ✅ MOSTRAR MENSAJE DE ÉXITO
+    mensajeExito.style.display = "block";
+    
+    // 🔥 SCROLL AUTOMÁTICO AL MENSAJE (para móviles)
+    mensajeExito.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+    
+    // ⏰ RECARGAR LA PÁGINA DESPUÉS DE 2.5 SEGUNDOS
+    setTimeout(function() {
+        location.reload(); // Recarga la página para poder enviar otro registro
+    }, 2500);
 
 })
 
-.catch(error=>{
-
-alert("Error de conexión.");
-
-btn.disabled=false;
-loading.style.display="none";
-
+.catch(error => {
+    
+    // Ocultar loading
+    loading.style.display = "none";
+    
+    // Mostrar error
+    alert("Error de conexión. Por favor, intenta de nuevo.");
+    
+    // Reactivar botón
+    btn.disabled = false;
+    
+    console.error("Error:", error);
+    
 });
 
 });
